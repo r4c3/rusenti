@@ -1,2 +1,2 @@
 # ubrask
-A Rusty palette-based bitmap editor for the web.
+Usenti but Rust and SvelteKit - a palette-based bitmap editor for the web.
