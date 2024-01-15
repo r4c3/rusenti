@@ -1,2 +1,2 @@
 # skru
-A Rusty paletted bitmap editor for the web.
+A paletted raster editor for the web.
