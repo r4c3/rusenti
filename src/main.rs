@@ -1,12 +1,26 @@
-use axum::{
-    routing::get,
-    Router,
-};
+use anyhow::Context;
+use clap::Parser;
+use sqlx::postgres::PgPoolOptions;
+use dotenvy::dotenv;
+
+use skrudriver::config::Config;
+use skrudriver::http;
 
 #[tokio::main]
-async fn main() {
-    let app = Router::new().route("/", get(|| async { "helo" }));
-    
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
-    axum::serve(listener, app).await.unwrap();
+async fn main() -> anyhow::Result<()> {
+    dotenv().ok();
+    let config = Config::parse();
+
+    let db = PgPoolOptions::new()
+        .max_connections(10)
+        .connect(&config.database_url)
+        .await
+        .context("could not connect to database")?;
+
+    // sqlx::migrate!().run(&db).await?;
+
+    http::serve(config, db).await?;
+
+    Ok(())
 }
+
