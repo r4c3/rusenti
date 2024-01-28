@@ -15,7 +15,7 @@ async fn main() -> anyhow::Result<()> {
     
     let db = PgPoolOptions::new()
         .max_connections(10)
-        .connect("postgres://dev:notprod@0.0.0.0:5432/skrudriver")
+        .connect("postgres://dev:notprod@localhost:5432/skrudriver")
         .await
         .context("could not connect to database")?;
 
