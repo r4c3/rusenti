@@ -4,23 +4,24 @@ use sqlx::postgres::PgPoolOptions;
 use dotenvy::dotenv;
 
 use skrudriver::config::Config;
-use skrudriver::http;
+use skrudriver::api;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     dotenv().ok();
     let config = Config::parse();
 
+    println!();
+    
     let db = PgPoolOptions::new()
         .max_connections(10)
-        .connect(&config.database_url)
+        .connect("postgres://dev:notprod@0.0.0.0:5432/skrudriver")
         .await
         .context("could not connect to database")?;
 
     // sqlx::migrate!().run(&db).await?;
 
-    http::serve(config, db).await?;
+    api::serve(config, db).await?;
 
     Ok(())
 }
-

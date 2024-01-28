@@ -1,4 +1,4 @@
-use crate::http::{
+use crate::api::{
    ApiContext,
    Result,
    models::user::{
@@ -9,15 +9,19 @@ use crate::http::{
 };
 use uuid::Uuid;
 use axum::{
+    response::Html,
     extract::State,
-    routing::{post},
+    routing::{get, post},
     Json,
     Router
 };
 
 pub(crate) fn router() -> Router<ApiContext> {
     Router::new()
-        .route("/api/user", post(create_user))
+        .route("/", get(|| async {
+            Html("<h1>success</h1>")
+        }))
+        // .route("/api/user", post(create_user))
 }
 
 #[allow(dead_code)]
