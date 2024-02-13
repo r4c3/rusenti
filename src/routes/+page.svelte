@@ -1,18 +1,16 @@
 <script lang="ts">
-    export let data: string;
+  import init, { greet } from "wasm";
+  import { onMount } from "svelte";
+
+  onMount(async () => {
+    await init();
+  });
 </script>
 
-<main>
-    {@html data.data}
-</main>
-
-
-<style>
-  main {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    align-items: center;
-    justify-content: center;
-  }
-</style>
+<div>
+  <button
+    on:click={() => {
+      greet("hello");
+    }}>Click Me</button
+  >
+</div>
