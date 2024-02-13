@@ -9,3 +9,7 @@ node_modules
 !.env.example
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+/wasm/pkg
+Cargo.lock
+/wasm/target
+package-lock.json
