@@ -24,5 +24,8 @@
 		"vite-plugin-static-copy": "^1.0.1",
 		"vite-plugin-wasm-pack": "^0.1.12"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"google-auth-library": "^9.6.3"
+	}
 }
