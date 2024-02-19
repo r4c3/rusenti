@@ -1,17 +1,21 @@
 <script lang="ts">
-  import init, { greet } from "wasm";
-  import { onMount } from "svelte";
-  import getGoogleOAuthURL from "$lib";
-  onMount(async () => {
-     await init();
-  });
+  const clientId: string = import.meta.env.VITE_CLIENT_ID;
+  const redirectUri: string = import.meta.env.VITE_REDIRECT_URI;
+
+  function loginWithGoogle(): void {
+    const responseType: string = "code";
+    const scope: string = "email profile openid";
+    const authUrl: string = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(
+      redirectUri,
+    )}&response_type=${responseType}&scope=${encodeURIComponent(
+      scope,
+    )}&prompt=consent`;
+
+    window.location.href = authUrl;
+  }
 </script>
 
-<div>
-  <button
-    on:click={() => {
-     // greet("hello");
-    }}>Click Me</button
-  >
-  <a href={getGoogleOAuthURL()}>loginWGoogle</a>
-</div>
+<main>
+  <h1>skru</h1>
+  <button on:click={loginWithGoogle}>Login with Google</button>
+</main>
