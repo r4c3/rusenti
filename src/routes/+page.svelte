@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
+  import { Button } from "$lib/components";
 
   const startBuilding = () => {
     goto("/canvas");
@@ -13,7 +14,7 @@
     <p class="bullet">• GPU-accelerated canvas rendering</p>
     <p class="bullet">• Server-side rendered static components</p>
     <p class="bullet">• Export to .png, .jpg, .c, and more</p>
-    <button on:click={startBuilding}> Start building --></button>
+    <Button on:click={startBuilding}>Start building --></Button>
   </div>
 </div>
 
@@ -41,18 +42,5 @@
   }
   .bullet {
     margin-left: 1rem;
-  }
-  button {
-    font-size: 3.4rem;
-    background: var(--white);
-    border: none;
-    border-radius: 10rem;
-    color: var(--black);
-    cursor: pointer;
-    width: fit-content;
-    padding: 0.5rem 2rem;
-    font-family: inherit;
-    font-weight: 700;
-    margin-top: 3.7rem;
   }
 </style>
