@@ -14,7 +14,8 @@
   /* global styles */
   :root {
     --white: #ffffff;
-    --gray: #1d1d1d;
+    --light-gray: #383838;
+    --dark-gray: #1d1d1d;
     --black: #131313;
     --font-family: "Inter";
     font-size: 100%; /* 1rem = 16px */

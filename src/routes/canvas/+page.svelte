@@ -1,1 +1,11 @@
-<h1>canvasPage</h1>
+<script lang="ts">
+  import { CanvasHeader, CanvasWorkspace } from "$lib/components";
+</script>
+
+<main>
+  <CanvasHeader />
+  <CanvasWorkspace />
+</main>
+
+<style>
+</style>

@@ -7,7 +7,7 @@
   };
 </script>
 
-<div id="screen">
+<main>
   <div id="content">
     <h1>Skru</h1>
     <p>A paletted bitmap editor for the web.</p>
@@ -16,10 +16,10 @@
     <p class="bullet">• Export to .png, .jpg, .c, and more</p>
     <Button on:click={startBuilding}>Start building --></Button>
   </div>
-</div>
+</main>
 
 <style>
-  #screen {
+  main {
     width: 100%;
     height: 100%;
     padding: 9% 8%;
