@@ -1,19 +1,26 @@
 <div id="page-container">
-  <slot/>
+  <slot />
 </div>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;900&display=swap');
-  
+  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;900&display=swap");
+
+  /* container styles */
+  #page-container {
+    height: 100vh;
+    width: 100vw;
+  }
+
   /* global styles */
   :root {
-    --white: #ECECEC;
-    --gray: #24242D;
-    --black: #141518;
+    --white: #ffffff;
+    --light-gray: #383838;
+    --dark-gray: #1d1d1d;
+    --black: #131313;
     --font-family: "Inter";
     font-size: 100%; /* 1rem = 16px */
   }
-  
+
   /* css reset */
   :global(body) {
     font-family: var(--font-family);
