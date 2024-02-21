@@ -1,54 +1,30 @@
 <script lang="ts">
-  let isResizing = false;
-  let startX: number;
-  let startWidth: number;
-
-  function onMouseDown(event: MouseEvent): void {
-    isResizing = true;
-    startX = event.clientX;
-    startWidth = element.offsetWidth;
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
-  }
-
-  function onMouseMove(event: MouseEvent): void {
-    if (!isResizing) return;
-    const dx = event.clientX - startX;
-    const newWidth = startWidth - dx;
-    element.style.width = `${newWidth}px`;
-  }
-
-  function onMouseUp(event: MouseEvent): void {
-    if (isResizing) {
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseup", onMouseUp);
-      isResizing = false;
-    }
-  }
-
-  let element: HTMLElement;
+  export let side: "left" | "right";
 </script>
 
-<div bind:this={element} class="resizable">
-  <div class="handle" on:mousedown={onMouseDown} />
+<div class="resizable-pane">
+  <div
+    class="resize-handle"
+    style={side === "left" ? "right: 0;" : "left: 0;"}
+  ></div>
   <slot />
 </div>
 
 <style>
-  .resizable {
+  .resizable-pane {
     position: relative;
-    display: flex;
-    flex-direction: row-reverse;
-    overflow: hidden;
-    width: 200px; /* Initial width */
-    min-width: 100px; /* Minimum width */
-    height: 100%;
-    background-color: var(--dark-gray);
+    background-color: var(--dark-gray); /* Light grey background */
+    width: 30rem; /* Default width, adjust as needed */
+    height: 100%; /* Full viewport height */
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); /* Soft shadow for some depth */
   }
 
-  .handle {
+  .resize-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px; /* Handle width */
     cursor: ew-resize;
-    width: 10px;
-    height: 100%;
+    background-color: var(--light-gray); /* Handle color */
   }
 </style>

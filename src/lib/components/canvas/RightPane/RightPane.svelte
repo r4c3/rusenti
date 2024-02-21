@@ -2,6 +2,6 @@
   import ResizablePane from "../ResizablePane.svelte";
 </script>
 
-<ResizablePane>
+<ResizablePane side="right">
   <p>right pane</p>
 </ResizablePane>
