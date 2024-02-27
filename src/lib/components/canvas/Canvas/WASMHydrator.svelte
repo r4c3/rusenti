@@ -1,6 +1,13 @@
-<canvas>
-  <p>canvas</p>
-</canvas>
+<script>
+  import { onMount } from "svelte";
+  import init from "wasm";
+
+  onMount(async () => {
+    await init();
+  });
+</script>
+
+<canvas id="canvas" />
 
 <style>
   canvas {
