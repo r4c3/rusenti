@@ -2,12 +2,13 @@
   import LeftPane from "./LeftPane/LeftPane.svelte";
   import Canvas from "./Canvas/WASMHydrator.svelte";
   import RightPane from "./RightPane/RightPane.svelte";
+  var value: any;
 </script>
 
 <div id="workspace-container">
   <LeftPane />
-  <Canvas />
-  <RightPane />
+  <Canvas color={value}/>
+  <RightPane bind:hex={value}/>
 </div>
 
 <style>
