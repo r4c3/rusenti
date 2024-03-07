@@ -43,7 +43,7 @@
    */
   function handleMouseMove(event) {
     if (!drawing) return;
-    viewfinder.color(event.clientX, event.clientY);
+    viewfinder.color(event.clientX - canvasElement.getBoundingClientRect().x, event.clientY - canvasElement.getBoundingClientRect().y);
     if (!panning) return;
     const dx = (event.clientX - startPos.x);
     const dy = (event.clientY - startPos.y);
