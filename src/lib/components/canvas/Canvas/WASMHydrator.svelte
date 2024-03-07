@@ -14,6 +14,8 @@
   /** @type {boolean} */
   let panning = false;
 
+  /** @type {boolean}*/
+  let drawing = false;
   /**
    * Initializes the WASM module and the viewfinder.
    */
@@ -31,7 +33,8 @@
   function handleMouseDown(event) {
     startPos.x = event.clientX;
     startPos.y = event.clientY;
-    panning = true;
+    panning = false;
+    drawing = true;
   }
 
   /**
@@ -39,9 +42,11 @@
    * @param {MouseEvent} event - The mouse move event.
    */
   function handleMouseMove(event) {
+    if (!drawing) return;
+    viewfinder.color(event.clientX, event.clientY);
     if (!panning) return;
-    const dx = -(event.clientX - startPos.x);
-    const dy = -(event.clientY - startPos.y);
+    const dx = (event.clientX - startPos.x);
+    const dy = (event.clientY - startPos.y);
     viewfinder.pan(dx, dy);
     startPos.x = event.clientX;
     startPos.y = event.clientY;
@@ -52,6 +57,7 @@
    */
   function handleMouseUp() {
     panning = false;
+    drawing = false;
   }
 
   /**
