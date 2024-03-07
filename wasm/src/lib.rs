@@ -72,7 +72,7 @@ impl Viewfinder {
         self.context.save();
         self.context.scale(self.zoom, self.zoom).unwrap();
         self.context
-            .translate(-self.viewport_x, -self.viewport_y)
+            .translate(-self.viewport_x / self.zoom, -self.viewport_y / self.zoom)
             .unwrap();
 
         //draw grid
