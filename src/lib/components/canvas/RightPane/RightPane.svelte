@@ -1,7 +1,7 @@
 <script lang="ts">
-  import ResizablePane from "../ResizablePane.svelte";
+  import { MenuPane } from "$lib/components";
 </script>
 
-<ResizablePane side="right">
+<MenuPane side="right">
   <p>right pane</p>
-</ResizablePane>
+</MenuPane>

@@ -1,5 +1,6 @@
 // global components
-export { default as Button } from './Button.svelte';
+export { default as NormalButton } from './NormalButton.svelte';
+export { default as MenuPane } from './MenuPane.svelte';
 
 // canvas re-exports
 export { default as CanvasHeader } from './canvas/Header/Header.svelte';
