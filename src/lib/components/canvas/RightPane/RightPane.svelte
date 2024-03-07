@@ -3,7 +3,7 @@
   import iro from '@jaames/iro';
   import { onMount } from "svelte";
 
-  var hex = "#ff0000"
+  export var hex = "#ff0000"
 
   onMount(async () => {
     // @ts-ignore

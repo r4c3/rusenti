@@ -2,6 +2,8 @@
   import { onMount } from "svelte";
   import init, { Viewfinder } from "wasm";
 
+  export let color;
+
   /** @type {HTMLCanvasElement} */
   let canvasElement;
 

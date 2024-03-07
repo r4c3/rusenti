@@ -72,10 +72,8 @@ impl Viewfinder {
         }
         self.pixels[(x_pixel as usize)+ 100*(y_pixel as usize)] = 1;
         self.render();
-
-
-
     }
+
     pub fn render(&self) {
         let canvas_width = self.canvas.width() as f64;
         let canvas_height = self.canvas.height() as f64;
