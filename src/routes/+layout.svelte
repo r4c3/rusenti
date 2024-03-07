@@ -3,7 +3,7 @@
 </div>
 
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;900&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap");
 
   /* container styles */
   #page-container {
@@ -14,9 +14,13 @@
   /* global styles */
   :root {
     --white: #ffffff;
+    --off-white: #cccccc;
+    --white-again: #aaaaaa;
+    --disabled-gray: #636363;
     --light-gray: #383838;
     --dark-gray: #1d1d1d;
     --black: #131313;
+    --accent: #ffc000;
     --font-family: "Inter";
     font-size: 100%; /* 1rem = 16px */
   }
