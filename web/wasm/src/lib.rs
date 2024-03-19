@@ -1,6 +1,6 @@
 use wasm_bindgen::prelude::*;
-use wasm_bindgen::{Clamped, JsCast};
-use web_sys::{window, CanvasRenderingContext2d, HtmlCanvasElement, ImageData};
+use wasm_bindgen::JsCast;
+use web_sys::{window, CanvasRenderingContext2d, HtmlCanvasElement};
 
 #[wasm_bindgen(start)]
 pub fn start() -> Result<(), JsValue> {
@@ -13,12 +13,10 @@ pub fn start() -> Result<(), JsValue> {
 pub struct Viewfinder {
     canvas: HtmlCanvasElement,
     context: CanvasRenderingContext2d,
-    world_width: u32,
-    world_height: u32,
     viewport_x: f64, // X offset of the viewport in the world
     viewport_y: f64, // Y offset of the viewport in the world
     zoom: f64,       // Zoom level of the viewport
-    pixels: Vec<u8>
+    pixels: Vec<u8>,
 }
 
 #[wasm_bindgen]
@@ -47,7 +45,7 @@ impl Viewfinder {
             viewport_x: 0.0,
             viewport_y: 0.0,
             zoom: 1.0,
-            pixels: vec![0; 10000]
+            pixels: vec![0; 10000],
         })
     }
 
@@ -62,15 +60,15 @@ impl Viewfinder {
         self.render();
     }
     pub fn color(&mut self, x: f64, y: f64) {
-        let x_pixel = (x - self.viewport_x)/((100 as f64)*self.zoom);
-        let y_pixel = (y - self.viewport_y)/((100 as f64)*self.zoom);
-        if ((0 >(x_pixel as i32))  || (100 <= (x_pixel as i32))) {
+        let x_pixel = (x - self.viewport_x) / ((100 as f64) * self.zoom);
+        let y_pixel = (y - self.viewport_y) / ((100 as f64) * self.zoom);
+        if ((0 > (x_pixel as i32)) || (100 <= (x_pixel as i32))) {
             return;
         }
-        if ((0 >(y_pixel as i32))  || (100 <= (y_pixel as i32))) {
+        if ((0 > (y_pixel as i32)) || (100 <= (y_pixel as i32))) {
             return;
         }
-        self.pixels[(x_pixel as usize)+ 100*(y_pixel as usize)] = 1;
+        self.pixels[(x_pixel as usize) + 100 * (y_pixel as usize)] = 1;
         self.render();
     }
 
@@ -93,14 +91,14 @@ impl Viewfinder {
         self.context.set_fill_style(&JsValue::from_str("white"));
         for x in (0..100) {
             for y in (0..100) {
-                let color: u8 = self.pixels[x + 100*y];
+                let color: u8 = self.pixels[x + 100 * y];
                 if (color != 0) {
                     self.context.set_fill_style(&JsValue::from_str("red"));
                 } else {
                     self.context.set_fill_style(&JsValue::from_str("white"));
                 }
-                self.context.fill_rect((x*100) as f64, (y*100) as f64, 50.0, 50.0);
-
+                self.context
+                    .fill_rect((x * 100) as f64, (y * 100) as f64, 50.0, 50.0);
             }
         }
 
