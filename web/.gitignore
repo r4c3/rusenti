@@ -3,6 +3,7 @@ logs
 *.log
 npm-debug.log*
 
+.svelte-kit
 # Dependency directory
 **/node_modules/**
 _node_modules
