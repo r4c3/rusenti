@@ -28,4 +28,3 @@
     background-color: var(--light-gray); /* Handle color */
   }
 </style>
-

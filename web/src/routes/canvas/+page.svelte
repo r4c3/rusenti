@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { CanvasHeader, CanvasWorkspace } from "$lib/components";
+  import CanvasHeader from "./Header/Header.svelte";
+  import CanvasWorkspace from "./Workspace.svelte";
 </script>
 
 <main>
