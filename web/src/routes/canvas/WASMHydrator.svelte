@@ -1,38 +1,79 @@
-<script lang="ts">
+<script>
   import { onMount } from "svelte";
-  import init, { World, LayerManager } from "wasm";
+  import init, { World } from "wasm";
 
-  export let color: { r: number; g: number; b: number };
+  /** @type {World} */
+  let world;
 
-  let canvasElement: HTMLCanvasElement;
-  let world: World;
-  let layerManager: LayerManager;
-  let startPos: { x: number; y: number } = { x: 0, y: 0 };
-  let panning = false;
-  let drawing = false;
+  /** @type {{x: number, y: number}} */
+  let startPos = { x: 0, y: 0 };
+
+  /** @type {{PAN: string, DRAW: string}} */
+  let cursorState = {
+    PAN: "PAN",
+    DRAW: "DRAW",
+  };
+
+  /** @type {string} */
+  let cursor = cursorState.PAN;
 
   onMount(async () => {
     await init();
-    world = new World("canvas");
-    layerManager = new LayerManager(8192, 8192);
-    world.set_layer_manager(layerManager);
-    updateCanvasSize();
-    window.addEventListener("resize", updateCanvasSize);
+    world = new World(500, 500);
+    console.log(world, "world");
+    world.render(); //black
   });
 
-  function handleMouseDown(event: MouseEvent) {}
+  /**
+   * @param {MouseEvent} event
+   */
+  function handleMouseDown(event) {
+    switch (cursor) {
+      case cursorState.PAN:
+        startPos = { x: event.clientX, y: event.clientY };
+        break;
+      case cursorState.DRAW:
+        break;
+    }
+  }
 
-  function handleMouseMove(event: MouseEvent) {}
+  /**
+   * @param {MouseEvent} event
+   */
+  function handleMouseMove(event) {
+    switch (cursor) {
+      case cursorState.PAN: {
+        const dx = event.clientX - startPos.x;
+        const dy = event.clientY - startPos.y;
 
-  function handleMouseUp() {}
+        if (world == null) {
+          return;
+        }
 
-  function handleWheel(event: WheelEvent) {}
+        world.pan(dx, dy);
+        startPos.x = event.clientX;
+        startPos.y = event.clientY;
+      }
+      default: {
+        world.render();
+      }
+    }
+  }
+
+  /**
+   * @param {MouseEvent} event
+   */
+  function handleMouseUp(event) {}
+
+  /**
+   * @param {WheelEvent} event
+   */
+  function handleWheel(event) {}
 
   function updateCanvasSize() {}
 </script>
 
 <canvas
-  bind:this={canvasElement}
   on:mousedown={handleMouseDown}
   on:mousemove={handleMouseMove}
   on:mouseup={handleMouseUp}
