@@ -16,8 +16,8 @@ impl Layer {
             visible: true,
             width,
             height,
-            offset_x: 8192 / 2 - (width / 2),
-            offset_y: 8192 / 2 - (height / 2),
+            offset_x: 0,
+            offset_y: 0
         }
     }
 }

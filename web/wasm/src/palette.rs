@@ -12,9 +12,9 @@ pub struct Palette {
 impl Palette {
     pub fn new() -> Palette {
         let mut colors = Vec::with_capacity(256 * 3);
-        colors.push(0);
-        colors.push(0);
-        colors.push(0);
+        colors.push(255);
+        colors.push(255);
+        colors.push(255);
         Palette { active: 0, colors }
     }
 }

@@ -15,12 +15,14 @@
   };
 
   /** @type {string} */
-  let cursor = cursorState.PAN;
-
+  let cursor = "";
+  /** @type {HTMLCanvasElement}*/
+  let canvas;
   onMount(async () => {
     await init();
-    world = new World(500, 500);
+    world = new World(200, 200);
     console.log(world, "world");
+    updateCanvasSize();
     world.render(); //black
   });
 
@@ -28,6 +30,7 @@
    * @param {MouseEvent} event
    */
   function handleMouseDown(event) {
+    cursor = cursorState.PAN;
     switch (cursor) {
       case cursorState.PAN:
         startPos = { x: event.clientX, y: event.clientY };
@@ -53,8 +56,6 @@
         world.pan(dx, dy);
         startPos.x = event.clientX;
         startPos.y = event.clientY;
-      }
-      default: {
         world.render();
       }
     }
@@ -63,17 +64,33 @@
   /**
    * @param {MouseEvent} event
    */
-  function handleMouseUp(event) {}
+  function handleMouseUp(event) {
+    switch (cursor) {
+      case cursorState.PAN: {
+        cursor = cursorState.DRAW;
+      }
+    }
+  }
 
   /**
    * @param {WheelEvent} event
    */
-  function handleWheel(event) {}
+  function handleWheel(event) {
+    event.preventDefault(); //no scroll
+    const zoomFactor = event.deltaY > 0 ? 0.9 : 1.1;
+    world.zoom(zoomFactor);
+    world.render();
+  }
 
-  function updateCanvasSize() {}
+  function updateCanvasSize() {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+  }
 </script>
 
 <canvas
+bind:this={canvas}
   on:mousedown={handleMouseDown}
   on:mousemove={handleMouseMove}
   on:mouseup={handleMouseUp}

@@ -5,6 +5,12 @@ mod viewport;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsValue;
 use web_sys::CanvasRenderingContext2d;
+use web_sys::HtmlCanvasElement;
+
+#[wasm_bindgen]
+extern "C" {
+    fn alert(s: &str);
+}
 
 #[wasm_bindgen(start)]
 pub fn start() -> Result<(), JsValue> {
@@ -13,10 +19,12 @@ pub fn start() -> Result<(), JsValue> {
 
 #[wasm_bindgen]
 pub struct World {
+    canvas: HtmlCanvasElement,
     context: CanvasRenderingContext2d,
     viewport: viewport::Viewport,
     layer_manager: layer::LayerManager,
     palette: palette::Palette,
+    rendering: bool
 }
 
 #[wasm_bindgen]
@@ -37,10 +45,12 @@ impl World {
             .unwrap();
 
         let mut world = World {
+            canvas,
             context,
             viewport: viewport::Viewport::new(),
             layer_manager: layer::LayerManager::new(bitmap_width, bitmap_height),
             palette: palette::Palette::new(),
+            rendering: false
         };
 
         world.layer_manager.add_layer();
@@ -49,7 +59,12 @@ impl World {
     }
 
     #[wasm_bindgen]
-    pub fn render(&self) {
+    pub fn render(&mut self) {
+        if (self.rendering) {
+            return;
+        }
+        self.rendering = true;
+        self.context.clear_rect(0.0, 0.0, self.canvas.width() as f64, self.canvas.height() as f64);
         for x in 0..(self.layer_manager.width) {
             for y in 0..(self.layer_manager.height) {
                 let mut r = 0;
@@ -70,7 +85,7 @@ impl World {
                         continue;
                     }
 
-                    let pixel_index = (x + y * self.layer_manager.width) as usize;
+                    let pixel_index = (layer_x + layer_y * self.layer_manager.width) as usize;
                     let palette_index = layer.pixels[pixel_index];
                     let layer_r = self.palette.colors[palette_index as usize * 3];
                     let layer_g = self.palette.colors[palette_index as usize * 3 + 1];
@@ -84,6 +99,7 @@ impl World {
                             b = layer_b;
                         }
                         a => {
+                            
                             r = (a * (layer_r) + (255 - a) * r) as u8 / 255;
                             g = (a * (layer_b) + (255 - a) * g) as u8 / 255;
                             b = (a * (layer_b) + (255 - a) * b) as u8 / 255;
@@ -94,15 +110,15 @@ impl World {
                 self.context
                     .set_fill_style(&JsValue::from_str(&format!("rgb({}, {}, {})", r, g, b)));
                 self.context.fill_rect(
-                    (x + self.viewport.offset.0) as f64 * self.viewport.zoom,
-                    (y + self.viewport.offset.1) as f64 * self.viewport.zoom,
+                    (x) as f64 * self.viewport.zoom + self.viewport.offset.0 as f64,
+                    (y) as f64 * self.viewport.zoom + self.viewport.offset.1 as f64,
                     self.viewport.zoom,
                     self.viewport.zoom,
                 );
             }
         }
+        self.rendering = false;
 
-        self.context.restore();
     }
 
     #[wasm_bindgen]
