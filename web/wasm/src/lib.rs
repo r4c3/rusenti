@@ -63,7 +63,9 @@ impl World {
         if (self.rendering) {
             return;
         }
-
+        let mut prev_r = 0;
+        let mut prev_g = 0;
+        let mut prev_b = 0;
         self.rendering = true;
         self.context.clear_rect(0.0, 0.0, self.canvas.width() as f64, self.canvas.height() as f64);
         for x in 0..(self.layer_manager.width) {
@@ -107,9 +109,13 @@ impl World {
                         }
                     }
                 }
-
-                self.context
+                if (r != prev_r || g != prev_g || b != prev_b) {
+                    self.context
                     .set_fill_style(&JsValue::from_str(&format!("rgb({}, {}, {})", r, g, b)));
+                    prev_r = r;
+                    prev_b = b;
+                    prev_g = g;
+                }
                 self.context.fill_rect(
                     (x) as f64 * self.viewport.zoom + self.viewport.offset.0 as f64,
                     (y) as f64 * self.viewport.zoom + self.viewport.offset.1 as f64,
