@@ -5,7 +5,7 @@ pub struct Layer {
     pub width: i32,
     pub height: i32,
     pub offset_x: i32,
-    pub offset_y: i32,
+    pub offset_y: i32
 }
 
 impl Layer {
@@ -26,6 +26,7 @@ pub struct LayerManager {
     pub layers: Vec<Layer>,
     pub width: i32,
     pub height: i32,
+    pub active_layer: usize
 }
 
 impl LayerManager {
@@ -34,6 +35,7 @@ impl LayerManager {
             layers: Vec::new(),
             width,
             height,
+            active_layer: 0
         }
     }
 

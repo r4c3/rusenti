@@ -13,7 +13,8 @@
     PAN: "PAN",
     DRAW: "DRAW",
   };
-
+  /** @type boolean */
+  let drawActive = false;
   /** @type {string} */
   let cursor = "";
   /** @type {HTMLCanvasElement}*/
@@ -22,6 +23,8 @@
     await init();
     world = new World(200, 200);
     console.log(world, "world");
+    world.set_palette_color(1, 100, 100, 100);
+    world.set_palette_active(1);
     updateCanvasSize();
     world.render(); //black
   });
@@ -30,12 +33,16 @@
    * @param {MouseEvent} event
    */
   function handleMouseDown(event) {
-    cursor = cursorState.PAN;
+    drawActive = true;
+    cursor = cursorState.DRAW;
     switch (cursor) {
       case cursorState.PAN:
         startPos = { x: event.clientX, y: event.clientY };
         break;
       case cursorState.DRAW:
+        let x = event.clientX - canvas.getBoundingClientRect().x
+        let y = event.clientY - canvas.getBoundingClientRect().y
+        world.color_pixel(x, y);
         break;
     }
   }
@@ -58,6 +65,12 @@
         startPos.y = event.clientY;
         world.render();
       }
+      case cursorState.DRAW: {
+        if (!drawActive) return;
+        let x = event.clientX - canvas.getBoundingClientRect().x;
+        let y = event.clientY - canvas.getBoundingClientRect().y;
+        world.color_pixel(x, y);
+      }
     }
   }
 
@@ -68,6 +81,9 @@
     switch (cursor) {
       case cursorState.PAN: {
         cursor = cursorState.DRAW;
+      }
+      case cursorState.DRAW: {
+        drawActive = false;
       }
     }
   }

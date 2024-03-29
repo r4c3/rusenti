@@ -63,6 +63,7 @@ impl World {
         if (self.rendering) {
             return;
         }
+
         self.rendering = true;
         self.context.clear_rect(0.0, 0.0, self.canvas.width() as f64, self.canvas.height() as f64);
         for x in 0..(self.layer_manager.width) {
@@ -85,7 +86,7 @@ impl World {
                         continue;
                     }
 
-                    let pixel_index = (layer_x + layer_y * self.layer_manager.width) as usize;
+                    let pixel_index = (layer_x + layer_y * layer.width) as usize;
                     let palette_index = layer.pixels[pixel_index];
                     let layer_r = self.palette.colors[palette_index as usize * 3];
                     let layer_g = self.palette.colors[palette_index as usize * 3 + 1];
@@ -127,6 +128,10 @@ impl World {
         self.palette.colors[palette_index * 3 + 1] = g;
         self.palette.colors[palette_index * 3 + 2] = b;
     }
+    #[wasm_bindgen]
+    pub fn set_palette_active(&mut self, palette_index: usize) {
+        self.palette.active = palette_index;
+    }
 
     #[wasm_bindgen]
     pub fn pan(&mut self, dx: i32, dy: i32) {
@@ -137,5 +142,22 @@ impl World {
     #[wasm_bindgen]
     pub fn zoom(&mut self, dz: f64) {
         self.viewport.zoom *= dz;
+    }
+    #[wasm_bindgen]
+    pub fn color_pixel(&mut self, mut x: i32, mut y: i32) {
+       x = x - self.viewport.offset.0;
+       y = y - self.viewport.offset.1;
+       x = ((x as f64)/self.viewport.zoom) as i32;
+       y = ((y as f64)/self.viewport.zoom) as i32;
+       let curr_layer : &mut layer::Layer = self.layer_manager.layers.get_mut(self.layer_manager.active_layer).unwrap();
+       let layer_x = x - curr_layer.offset_x;
+       let layer_y = y - curr_layer.offset_y;
+       if layer_x < 0 || layer_x > curr_layer.width || layer_y < 0 || layer_y > curr_layer.height
+       {
+           return;
+       }
+       let pixel_index = (layer_x + layer_y * curr_layer.width) as usize;
+       curr_layer.pixels[pixel_index] = self.palette.active as u8;
+       self.render();
     }
 }

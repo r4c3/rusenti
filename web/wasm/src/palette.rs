@@ -5,16 +5,16 @@ extern "C" {
 }
 
 pub struct Palette {
-    pub active: u8,
+    pub active: usize,
     pub colors: Vec<u8>,
 }
 
 impl Palette {
     pub fn new() -> Palette {
         let mut colors = Vec::with_capacity(256 * 3);
-        colors.push(255);
-        colors.push(255);
-        colors.push(255);
+        for i in (0..768) {
+            colors.push(255);
+        }
         Palette { active: 0, colors }
     }
 }
