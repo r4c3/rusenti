@@ -40,8 +40,8 @@
         startPos = { x: event.clientX, y: event.clientY };
         break;
       case cursorState.DRAW:
-        let x = event.clientX - canvas.getBoundingClientRect().x
-        let y = event.clientY - canvas.getBoundingClientRect().y
+        let x = event.clientX - canvas.getBoundingClientRect().x;
+        let y = event.clientY - canvas.getBoundingClientRect().y;
         world.color_pixel(x, y);
         break;
     }
@@ -106,7 +106,7 @@
 </script>
 
 <canvas
-bind:this={canvas}
+  bind:this={canvas}
   on:mousedown={handleMouseDown}
   on:mousemove={handleMouseMove}
   on:mouseup={handleMouseUp}

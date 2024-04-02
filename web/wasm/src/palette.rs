@@ -12,7 +12,7 @@ pub struct Palette {
 impl Palette {
     pub fn new() -> Palette {
         let mut colors = Vec::with_capacity(256 * 3);
-        for i in (0..768) {
+        for _ in 0..768 {
             colors.push(255);
         }
         Palette { active: 0, colors }

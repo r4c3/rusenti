@@ -24,7 +24,7 @@ pub struct World {
     viewport: viewport::Viewport,
     layer_manager: layer::LayerManager,
     palette: palette::Palette,
-    rendering: bool
+    rendering: bool,
 }
 
 #[wasm_bindgen]
@@ -50,7 +50,7 @@ impl World {
             viewport: viewport::Viewport::new(),
             layer_manager: layer::LayerManager::new(bitmap_width, bitmap_height),
             palette: palette::Palette::new(),
-            rendering: false
+            rendering: false,
         };
 
         world.layer_manager.add_layer();
@@ -60,14 +60,19 @@ impl World {
 
     #[wasm_bindgen]
     pub fn render(&mut self) {
-        if (self.rendering) {
+        if self.rendering {
             return;
         }
         let mut prev_r = 0;
         let mut prev_g = 0;
         let mut prev_b = 0;
         self.rendering = true;
-        self.context.clear_rect(0.0, 0.0, self.canvas.width() as f64, self.canvas.height() as f64);
+        self.context.clear_rect(
+            0.0,
+            0.0,
+            self.canvas.width() as f64,
+            self.canvas.height() as f64,
+        );
         for x in 0..(self.layer_manager.width) {
             for y in 0..(self.layer_manager.height) {
                 let mut r = 0;
@@ -102,16 +107,15 @@ impl World {
                             b = layer_b;
                         }
                         a => {
-                            
                             r = (a * (layer_r) + (255 - a) * r) as u8 / 255;
                             g = (a * (layer_b) + (255 - a) * g) as u8 / 255;
                             b = (a * (layer_b) + (255 - a) * b) as u8 / 255;
                         }
                     }
                 }
-                if (r != prev_r || g != prev_g || b != prev_b) {
+                if r != prev_r || g != prev_g || b != prev_b {
                     self.context
-                    .set_fill_style(&JsValue::from_str(&format!("rgb({}, {}, {})", r, g, b)));
+                        .set_fill_style(&JsValue::from_str(&format!("rgb({}, {}, {})", r, g, b)));
                     prev_r = r;
                     prev_b = b;
                     prev_g = g;
@@ -125,7 +129,6 @@ impl World {
             }
         }
         self.rendering = false;
-
     }
 
     #[wasm_bindgen]
@@ -149,21 +152,25 @@ impl World {
     pub fn zoom(&mut self, dz: f64) {
         self.viewport.zoom *= dz;
     }
+
     #[wasm_bindgen]
     pub fn color_pixel(&mut self, mut x: i32, mut y: i32) {
-       x = x - self.viewport.offset.0;
-       y = y - self.viewport.offset.1;
-       x = ((x as f64)/self.viewport.zoom) as i32;
-       y = ((y as f64)/self.viewport.zoom) as i32;
-       let curr_layer : &mut layer::Layer = self.layer_manager.layers.get_mut(self.layer_manager.active_layer).unwrap();
-       let layer_x = x - curr_layer.offset_x;
-       let layer_y = y - curr_layer.offset_y;
-       if layer_x < 0 || layer_x > curr_layer.width || layer_y < 0 || layer_y > curr_layer.height
-       {
-           return;
-       }
-       let pixel_index = (layer_x + layer_y * curr_layer.width) as usize;
-       curr_layer.pixels[pixel_index] = self.palette.active as u8;
-       self.render();
+        x = x - self.viewport.offset.0;
+        y = y - self.viewport.offset.1;
+        x = ((x as f64) / self.viewport.zoom) as i32;
+        y = ((y as f64) / self.viewport.zoom) as i32;
+        let curr_layer: &mut layer::Layer = self
+            .layer_manager
+            .layers
+            .get_mut(self.layer_manager.active_layer)
+            .unwrap();
+        let layer_x = x - curr_layer.offset_x;
+        let layer_y = y - curr_layer.offset_y;
+        if layer_x < 0 || layer_x > curr_layer.width || layer_y < 0 || layer_y > curr_layer.height {
+            return;
+        }
+        let pixel_index = (layer_x + layer_y * curr_layer.width) as usize;
+        curr_layer.pixels[pixel_index] = self.palette.active as u8;
+        self.render();
     }
 }
